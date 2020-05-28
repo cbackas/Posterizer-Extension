@@ -44,7 +44,7 @@ $ npm run build
 ```
 
 
-## Compress :nut_and_bolt: 
+## Compress
 
 ```bash
 # compress build folder to {manifest.name}.zip and crx
