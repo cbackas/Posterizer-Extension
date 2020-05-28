@@ -1,6 +1,6 @@
 # Posterizer browser extension for PosterDB and Plex
 
-Posterizer is made to quickly POST image URLs to Plex Media Server directly from the web while browsing poster sets on [https://theposterdb.com/](theposterdb.com/)
+Posterizer is made to quickly POST image URLs to Plex Media Server directly from the web while browsing poster sets on [theposterdb.com](https://theposterdb.com/)
 
 *Built from using [React Extension Boilerplate](https://github.com/kryptokinght/react-extension-boilerplate)*
 
