@@ -1,6 +1,19 @@
 # Posterizer browser extension for PosterDB and Plex
 
-Posterizer is made to quickly POST image URLs to Plex Media Server directly from the web while browsing poster sets on [theposterdb.com](https://theposterdb.com/)
+Posterizer is made to quickly POST image URLs to Plex Media Server directly from the web while browsing poster sets on [ThePosterDB.com](https://theposterdb.com/)
+
+When looking at a TV show poster set while logged into ThePosterDB, the extension can be used to search for a show in your Plex library. Once a show is selected, the extension parses the HTML to find download URLs of each season poster and matches it up to the corresponding season in Plex which results in a list of POST URLs that can be used to update plex images. This means you don't need to right click on each image's download button, copy the url, then walk through the Plex edit menus and paste the URL.
+
+As of now this project has hard coded internal IP addresses for API calls as it's for personal use. Thing's needed before it's ready for public use:
+<em>
+  
+  :zap: Fix matching for 'Specials' posters <br/>
+  :zap: Detection for API failure and request user/pass auth again / clearing of token out of storage <br/>
+  :zap: Plex oAUTH instead of simple form/API combo <br/>
+  :zap: Movie compatability? <br/>
+  :zap: PosterDB API instead of parsing? <br/>
+
+</em>
 
 *Built using [React Extension Boilerplate](https://github.com/kryptokinght/react-extension-boilerplate)*
 
