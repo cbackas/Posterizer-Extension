@@ -1,35 +1,8 @@
-# React Extension Boilerplate for Chrome and Firefox
+# Posterizer browser extension for PosterDB and Plex
 
-[![Fork](https://img.shields.io/github/forks/kryptokinght/react-extension-boilerplate.svg) ](https://github.com/kryptokinght/react-extension-boilerplate/network/members)
-[![Issues](https://img.shields.io/github/issues/kryptokinght/react-extension-boilerplate.svg) ](https://github.com/kryptokinght/react-extension-boilerplate/issues)
-[![Stars](https://img.shields.io/github/stars/kryptokinght/react-extension-boilerplate.svg) ](https://github.com/kryptokinght/react-extension-boilerplate/stargazers)
-[![Watchers](https://img.shields.io/github/watchers/kryptokinght/react-extension-boilerplate.svg) ](https://github.com/kryptokinght/react-extension-boilerplate/watchers)
-[![MIT license](https://img.shields.io/github/license/GirlScriptSummerOfCode/Upay.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/kryptokinght/react-extension-boilerplate/pulls)
+Posterizer is made to quickly POST image URLs to Plex Media Server directly from the web while browsing poster sets on [https://theposterdb.com/](theposterdb.com/)
 
-**Still in Development!**
-<em>
-  
-  :zap: Are you trying to create a **web Extension** but still looking for a starting point? <br/>
-  :zap: Do you want your extension to run in both Firefox and Chrome? <br/>
-  :zap: Are you tired of repeteadly reloading your extension after every small change you make? <br/>
-  :zap: Do you want to develop your exetension using modern technologies like **React, Webpack, Jest**? <br/>
-
-</em>
-
-<br/>
-
-***We have a solution!***
-
-React Extension Boilerplate is a modern web extension template for building 
-Mozilla and Chrome extensions using ReactJS.
-
-Allows smooth and fast development of extension using on-the-go loading, building, packaging and publishing on the most common browsers Chrome and Firefox.<br/>
-Make changes to the source code and watch the extension implement these changes live in the browser.
-<br/> 
-Implements all the best Javascript practises with ESLint, Jest, React-StoryBook, Webpack and lots more. 
-
-* Source: [https://github.com/kryptokinght/react-extension-boilerplate](https://github.com/kryptokinght/react-extension-boilerplate)
+*Built from using [React Extension Boilerplate](https://github.com/kryptokinght/react-extension-boilerplate) *
 
 
 ## Installation :checkered_flag:
