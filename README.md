@@ -7,6 +7,7 @@ When looking at a TV show poster set while logged into ThePosterDB, the extensio
 As of now this project has hard coded internal IP addresses for API calls as it's for personal use. Thing's needed before it's ready for public use:
 <em>
   
+  :x: Remove hard coded IP address calls and use Plex API <br/>
   :x: Fix matching for 'Specials' posters <br/>
   :x: Detection for API failure and request user/pass auth again / clearing of token out of storage <br/>
   :x: Plex oAUTH instead of simple form/API combo <br/>
