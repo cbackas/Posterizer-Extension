@@ -6,7 +6,8 @@ When looking at a TV show poster set while logged into ThePosterDB, the extensio
 
 ![Sample Video](/screenshots/recording.mp4)
 
-As of now this project has hard coded internal IP addresses for API calls as it's for personal use. Thing's needed before it's ready for public use:
+### ToDo before it would be ready for public use:
+As of now this project has hard coded internal IP addresses for API calls as it's for personal use. 
 <em>
   
   :x: Remove hard coded IP address calls and use Plex API <br/>
