@@ -4,6 +4,8 @@ Posterizer is made to quickly POST image URLs to Plex Media Server directly from
 
 When looking at a TV show poster set while logged into ThePosterDB, the extension can be used to search for a show in your Plex library. Once a show is selected, the extension parses the HTML to find download URLs of each season poster and matches it up to the corresponding season in Plex which results in a list of POST URLs that can be used to update plex images. This means you don't need to right click on each image's download button, copy the url, then walk through the Plex edit menus and paste the URL.
 
+
+
 As of now this project has hard coded internal IP addresses for API calls as it's for personal use. Thing's needed before it's ready for public use:
 <em>
   
@@ -55,15 +57,6 @@ These assets are copied as it is to the build folder, just like the `/src/lib` f
 ```bash
 # build files to './extension'
 $ npm run build
-```
-
-
-## Compress
-
-```bash
-# compress build folder to {manifest.name}.zip and crx
-$ npm run build
-$ npm run compress -- [options]
 ```
 
 ## License
