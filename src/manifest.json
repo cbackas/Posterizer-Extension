@@ -20,6 +20,7 @@
     "*://*.theposterdb.com/*",
     "tabs",
     "activeTab",
+    "identity",
     "storage",
     "unlimitedStorage"
   ],
