@@ -18,8 +18,8 @@ function SearchPage() {
     }
   };
 
-  const handleKeyPress = (event) => {
-    if(event.key === 'Enter'){
+  const handleKeyPress = event => {
+    if (event.key === 'Enter') {
       handleSearch();
     }
   };
@@ -28,10 +28,10 @@ function SearchPage() {
     <React.Fragment>
       <Segment
         style={{
-          margin: '1rem',
           overflow: 'auto',
           position: 'absolute',
-          top: 0
+          top: '5.5em',
+          width: '90%'
         }}
         raised
       >
@@ -41,8 +41,13 @@ function SearchPage() {
             value={dataStore.inputText}
             onChange={handleInput}
             onKeyPress={handleKeyPress}
+            style={{ width: '70%' }}
           />
-          <Button onClick={handleSearch} content="Search" />
+          <Button
+            onClick={handleSearch}
+            content="Search"
+            style={{ width: '25%' }}
+          />
         </div>
       </Segment>
       <Grid
@@ -50,10 +55,9 @@ function SearchPage() {
         relaxed
         columns={3}
         style={{
-          minHeight: 600,
-          width: 450,
-          margin: '1.5rem',
-          marginTop: '5.5rem'
+          margin: '6em 1.5em 4em 1.5em',
+          minHeight: '350px',
+          height: '100%'
         }}
       >
         {dataStore.foundShows.map(show => (
