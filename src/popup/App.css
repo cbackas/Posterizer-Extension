@@ -1,12 +1,19 @@
-.App {
-  text-align: center;
+.app {
+  height: 600px;
+  width: 450px;
 }
 
-.App-header {
+.top {
+  background-color: #282c34;
+  max-height: 10%;
+}
+
+.body {
+  min-height: 90%;
   background-color: #282c34;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  text-align: center;
   color: white;
 }
