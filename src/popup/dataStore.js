@@ -1,7 +1,7 @@
 import { store } from '@risingstack/react-easy-state';
 
 const dataStore = store({
-  token: '',
+  plex_authenticated: false,
   inputText: '',
   foundShows: [],
   seasons: [],
