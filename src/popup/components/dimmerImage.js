@@ -105,7 +105,7 @@ class DimmerImage extends React.Component {
   // When the apply button is clicked on the modal popup
   handleApply = m => {
     // sends the matchups to background/index.js to make the POST requests
-    browser.runtime.sendMessage({ req: 'postbois', matchups: m });
+    browser.runtime.sendMessage({ request: 'postbois', matchups: m });
 
     // close the popup
     setTimeout(() => {

@@ -1,18 +1,15 @@
 import React from 'react';
-import { view, store } from '@risingstack/react-easy-state';
-import { Segment, Input, Grid, Button } from 'semantic-ui-react';
+import * as browser from 'webextension-polyfill';
+import { view } from '@risingstack/react-easy-state';
+import { Segment, Grid, Button, Header } from 'semantic-ui-react';
 
-const { userAuth } = require('../../lib/js/plex');
+// const { userAuth } = require('../../lib/js/plex');
+// const tokenFetcher = require('../../lib/js/plexTokenFetcher');
 
 // this is all contained inside each plex show on the search list
 class PlexLogin extends React.Component {
   constructor(props) {
     super(props);
-
-    this.compStore = store({
-      user: 'zgibson@live.com',
-      pass: ''
-    });
   }
 
   // handle typing in text boxes
@@ -21,10 +18,7 @@ class PlexLogin extends React.Component {
 
   // handle login button - sends it off to get the plex token
   handleLogin = () => {
-    const { user, pass } = this.compStore;
-    if (user != '' && pass != '') {
-      userAuth(user, pass);
-    }
+    browser.runtime.sendMessage({ request: 'fetchToken' });
   };
 
   handleKeyPress = event => {
@@ -34,8 +28,6 @@ class PlexLogin extends React.Component {
   };
 
   render() {
-    const { user, pass } = this.compStore;
-
     return (
       <React.Fragment>
         <Grid
@@ -50,23 +42,15 @@ class PlexLogin extends React.Component {
           }}
         >
           <Grid.Column style={{ height: 200, width: 400 }}>
-            <Segment raised style={{ height: '100%', width: '100%' }}>
-              <Input
-                style={{ padding: 5 }}
-                fluid
-                placeholder="Username..."
-                value={user}
-                onChange={this.handleUserInput}
-              />
-              <Input
-                style={{ padding: 5 }}
-                type="password"
-                fluid
-                placeholder="Password..."
-                value={pass}
-                onChange={this.handlePassInput}
-                onKeyPress={this.handleKeyPress}
-              />
+            <Segment
+              raised
+              style={{ height: '100%', width: '100%' }}
+              textAlign="center"
+            >
+              <Header size="medium">
+                You need to login to Plex to use Posterizer. Click login to
+                trigger the OAuth process.
+              </Header>
               <Button onClick={this.handleLogin} content="Login" />
             </Segment>
           </Grid.Column>
