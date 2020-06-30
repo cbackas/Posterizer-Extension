@@ -10,11 +10,6 @@ const plex = require('../../lib/js/plex');
 // const request = require('request');
 const cheerio = require('cheerio');
 
-const dlTitleRegex = /(.+) - (Season [0-9]+|Specials).*/;
-const isPosterDownload = (i, link) => {
-  return dlTitleRegex.test(link.attribs.download);
-};
-
 // this is all contained inside each plex show on the search list
 class DimmerImage extends React.Component {
   constructor(props) {
@@ -47,15 +42,18 @@ class DimmerImage extends React.Component {
           .sendMessage(tabs[0].id, { req: 'source-code' })
           .then(response => {
             // use cheerio to parse out URLs with appropriate titles (seasons)
+            const dlTitleRegex = /(.+) - (Season [0-9]+|Specials).*/;
             let $ = cheerio.load(response.content);
             $('a')
-              .filter(isPosterDownload)
+              .filter((i, link) => {
+                return dlTitleRegex.test(link.attribs.download);
+              })
               .each((i, link) => {
                 const href = link.attribs.href;
                 const seasonTitle = link.attribs.download.match(
                   dlTitleRegex
                 )[2];
-                
+
                 // save poster URLs to data store
                 dataStore.posterSeasons[
                   seasonTitle.toLowerCase()
@@ -64,38 +62,27 @@ class DimmerImage extends React.Component {
           });
       });
       setTimeout(() => {
-        // matchups of posterDB 
+        // matchups of posterDB
         dataStore.matchups = {};
         const { seasons, posterSeasons } = dataStore;
-
-        let token = '';
-        const storageItem = browser.storage.local.get('token');
-        storageItem.then(res => {
-          token = res.token;
-
-          seasons.forEach(({ title, key }) => {
+        seasons.forEach(({ title, key }) => {
+          const regex_db_id = /\/library\/metadata\/([0-9]+)\//;
+          const db_id_match = key.match(regex_db_id);
+          if (db_id_match) {
+            const db_id = db_id_match[1];
             const posterDBURL = encodeURIComponent(
               posterSeasons[title.toLowerCase()]
             );
-            const path = key.replace(
-              'children',
-              'posters?includeExternalMedia=1&url='
-            );
-            const postURL =
-              'http://10.20.0.10:32400' +
-              path +
-              posterDBURL +
-              `&X-Plex-Token=${token}`;
-            dataStore.matchups[title.toLowerCase()] = postURL;
-          });
-
-          const { matchups } = dataStore;
-          let domNode = ReactDOM.findDOMNode(this.applyRef.current);
-          if (domNode) {
-            this.compStore.readyToApply = true;
-            domNode.addEventListener('click', () => this.handleApply(matchups));
+            dataStore.matchups[title.toLowerCase()] = [db_id, posterDBURL];
           }
         });
+
+        const { matchups } = dataStore;
+        let domNode = ReactDOM.findDOMNode(this.applyRef.current);
+        if (domNode) {
+          this.compStore.readyToApply = true;
+          domNode.addEventListener('click', () => this.handleApply(matchups));
+        }
       }, 1500);
     }, 1500);
 
@@ -105,12 +92,12 @@ class DimmerImage extends React.Component {
   // When the apply button is clicked on the modal popup
   handleApply = m => {
     // sends the matchups to background/index.js to make the POST requests
-    browser.runtime.sendMessage({ request: 'postbois', matchups: m });
+    browser.runtime.sendMessage({ request: 'post_matchups', matchups: m });
 
     // close the popup
     setTimeout(() => {
       window.close();
-    }, 500);
+    }, 350);
   };
 
   render() {
