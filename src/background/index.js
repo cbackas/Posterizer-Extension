@@ -37,15 +37,15 @@ const postFinalURLs = matchups => {
       setTimeout(() => {
         console.log(`[POST] ${request_url}`);
 
-        // fetch(request_url, {
-        //   method: 'POST',
-        //   redirect: 'follow'
-        // })
-        //   .then(response => response.text())
-        //   .then(result => console.log(result))
-        //   .catch(error => {
-        //     console.log('error', error);
-        //   });
+        fetch(request_url, {
+          method: 'POST',
+          redirect: 'follow'
+        })
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => {
+            console.log('error', error);
+          });
       }, 250);
     });
   };
