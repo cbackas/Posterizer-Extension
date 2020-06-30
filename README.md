@@ -10,12 +10,12 @@ When looking at a TV show poster set while logged into ThePosterDB, the extensio
 As of now this project has hard coded internal IP addresses for API calls as it's for personal use. 
 <em>
   
-  :x: Remove hard coded IP address calls and use Plex API <br/>
+  :white_check_mark: Plex oAUTH instead of simple form/API combo <br/>
+  :white_check_mark: Ability to clear auth and cache <br/>
+  :large_orange_diamond: Replace hard coded IP address calls to Plex API<br/>
+  :large_orange_diamond: Detect API failure and respond appropriately <br/>
   :x: Fix matching for 'Specials' posters <br/>
-  :x: Detection for API failure and request user/pass auth again / clearing of token out of storage <br/>
-  :x: Plex oAUTH instead of simple form/API combo <br/>
-  :x: Movie compatability? <br/>
-  :x: PosterDB API instead of parsing? <br/>
+  :x: Movie/Collection compatability? <br/>
 
 </em>
 
