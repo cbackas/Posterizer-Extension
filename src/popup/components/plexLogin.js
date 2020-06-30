@@ -3,28 +3,15 @@ import * as browser from 'webextension-polyfill';
 import { view } from '@risingstack/react-easy-state';
 import { Segment, Grid, Button, Header } from 'semantic-ui-react';
 
-// const { userAuth } = require('../../lib/js/plex');
-// const tokenFetcher = require('../../lib/js/plexTokenFetcher');
-
 // this is all contained inside each plex show on the search list
 class PlexLogin extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  // handle typing in text boxes
-  handleUserInput = event => (this.compStore.user = event.target.value);
-  handlePassInput = event => (this.compStore.pass = event.target.value);
-
   // handle login button - sends it off to get the plex token
   handleLogin = () => {
-    browser.runtime.sendMessage({ request: 'fetchToken' });
-  };
-
-  handleKeyPress = event => {
-    if (event.key === 'Enter') {
-      this.handleLogin();
-    }
+    browser.runtime.sendMessage({ request: 'fetch_token' });
   };
 
   render() {
