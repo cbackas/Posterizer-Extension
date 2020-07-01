@@ -5,11 +5,11 @@
 
 .top {
   background-color: #282c34;
-  max-height: 10%;
+  max-height: 14%;
 }
 
 .body {
-  min-height: 90%;
+  min-height: 86%;
   background-color: #282c34;
   display: flex;
   flex-direction: column;
