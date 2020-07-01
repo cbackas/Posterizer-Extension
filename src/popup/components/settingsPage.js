@@ -36,8 +36,6 @@ class SettingsPage extends React.Component {
       } else {
         dataStore.selected_server = {};
       }
-
-      console.log(dataStore.selected_server);
     });
   }
 
