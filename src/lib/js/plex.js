@@ -9,15 +9,18 @@ function PlexClient() {
   return new Promise((resolve, reject) => {
     const storageItem = browser.storage.local.get([
       'token',
-      'selected_server_uri'
+      'selected_server_uri',
+      'selected_lib_id'
     ]);
     storageItem.then(res => {
-      const { token, selected_server_uri } = res;
+      const { token, selected_server_uri, selected_lib_id } = res;
 
       if (!selected_server_uri) {
         // TODO open settings page
-        dataStore.settings_view = true;
-        return reject('Selected URI NULL');
+        failToSettings('Selected Server URI NULL');
+      }
+      if (!selected_lib_id || selected_lib_id === 'none') {
+        failToSettings('Selected library ID NULL/none');
       }
 
       const url = new URL(selected_server_uri);
@@ -30,6 +33,11 @@ function PlexClient() {
         })
       );
     });
+
+    const failToSettings = reason => {
+      dataStore.settings_view = true;
+      return reject(`[Posterizer] Search failed: ${reason}`);
+    };
   });
 }
 
@@ -41,26 +49,27 @@ const searchShows = inputText => {
       storageItem.then(res => {
         const { selected_lib_id } = res;
 
-        resolve
-          .query(`/library/sections/${selected_lib_id}/all?search=${inputText}`)
-          .then(
-            result => {
-              const shows = [];
-              result.MediaContainer.Metadata.forEach(show => {
-                // stop the list from getting too big
-                if (shows.length >= 30) return;
-                shows.push({
-                  id: show.ratingKey,
-                  name: show.title,
-                  thumb: show.thumb
-                });
+        resolve.query(`/library/sections/${selected_lib_id}/all`).then(
+          result => {
+            const shows = [];
+            result.MediaContainer.Metadata.filter(({ title }) => {
+              return title.toLowerCase().includes(inputText.toLowerCase());
+            }).forEach(show => {
+              console.log(show);
+              // stop the list from getting too big
+              if (shows.length >= 30) return;
+              shows.push({
+                id: show.ratingKey,
+                name: show.title,
+                thumb: show.thumb
               });
-              dataStore.foundShows = shows;
-            },
-            err => {
-              console.error('Could not connect to server', err);
-            }
-          );
+            });
+            dataStore.foundShows = shows;
+          },
+          err => {
+            console.error('Could not connect to server', err);
+          }
+        );
       });
     },
     err => {
