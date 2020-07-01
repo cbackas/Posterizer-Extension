@@ -1,6 +1,6 @@
 import React from 'react';
 import * as browser from 'webextension-polyfill';
-import { view } from '@risingstack/react-easy-state';
+import { view, batch } from '@risingstack/react-easy-state';
 
 import SearchPage from './components/searchPage';
 import SettingsPage from './components/settingsPage';
@@ -12,14 +12,34 @@ import dataStore from './dataStore';
 
 function App() {
   // check if we have a token stored and tell the view not to show login screen
-  const storageItem = browser.storage.local.get(['token']);
+  const storageItem = browser.storage.local.get([
+    'token',
+    'selected_server_uri',
+    'selected_server_name',
+    'selected_lib_id',
+    'selected_lib_name'
+  ]);
   storageItem.then(res => {
-    const { token } = res;
-    if (token != '' && token != null) {
-      dataStore.plex_authenticated = true;
-    } else {
-      dataStore.plex_authenticated = false;
-    }
+    const {
+      token,
+      selected_server_uri,
+      selected_server_name,
+      selected_lib_id,
+      selected_lib_name
+    } = res;
+
+    batch(() => {
+      dataStore.plex_authenticated = token && token != '';
+
+      dataStore.selected_server = {
+        name: selected_server_name,
+        uri: selected_server_uri
+      };
+      dataStore.selected_library = {
+        name: selected_lib_name,
+        id: selected_lib_id
+      };
+    });
   });
 
   const { plex_authenticated, settings_view } = dataStore;
