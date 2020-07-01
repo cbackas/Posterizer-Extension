@@ -1,6 +1,6 @@
 import React from 'react';
 import * as browser from 'webextension-polyfill';
-import { view } from '@risingstack/react-easy-state';
+import { view, batch } from '@risingstack/react-easy-state';
 // import { Input, Button, Segment, Grid, Header } from 'semantic-ui-react';
 import { Button, Dropdown, Segment } from 'semantic-ui-react';
 
@@ -20,24 +20,48 @@ class SettingsPage extends React.Component {
       if (reject) console.log(reject);
     });
 
-    const storageItem = browser.storage.local.get('selected_uri');
+    const storageItem = browser.storage.local.get([
+      'selected_server_uri',
+      'selected_server_name'
+    ]);
     storageItem.then(res => {
-      const { selected_uri } = res;
-      if (selected_uri) {
-        dataStore.selected_server_uri = selected_uri;
+      const { selected_server_uri, selected_server_name } = res;
+      if (selected_server_uri && selected_server_name) {
+        batch(() => {
+          dataStore.selected_server = {
+            name: selected_server_name,
+            uri: selected_server_uri
+          };
+        });
       } else {
-        dataStore.selected_server_uri = 'none';
+        dataStore.selected_server = {};
       }
+
+      console.log(dataStore.selected_server);
     });
   }
 
   // handle server selection dropdown
   handleDropdownClick = (e, { value }) => {
-    console.log('Setting selected_uri: ', value);
-    dataStore.selected_server_uri = value;
+    const { server_options } = dataStore;
+    const { name } = server_options.find(({ value: val }) => val === value);
+
+    batch(() => {
+      dataStore.selected_server.name = name;
+      dataStore.selected_server.uri = value;
+    });
     // set browser storage selected_uri to null if 'none' was selected
     browser.storage.local.set({
-      selected_uri: value === 'none' ? null : value
+      selected_server_uri: value === 'none' ? null : value,
+      selected_server_name: name
+    });
+    console.log(`Setting selected_uri: ${name} ${value}`);
+
+    plex.getSelectedServerLibraries().then((res, rej) => {
+      if (res) {
+        dataStore.library_options = res;
+      }
+      if (rej) dataStore.library_options = [];
     });
   };
 
@@ -53,7 +77,8 @@ class SettingsPage extends React.Component {
   };
 
   render() {
-    const { selected_server_uri, server_options } = dataStore;
+    const { selected_server, server_options } = dataStore;
+    const { uri } = selected_server;
 
     const segmentStyle = {
       width: '90vw',
@@ -77,7 +102,7 @@ class SettingsPage extends React.Component {
               placeholder="Plex Server"
               selection
               fluid
-              value={selected_server_uri}
+              value={uri}
               onChange={this.handleDropdownClick}
               options={server_options}
             />
