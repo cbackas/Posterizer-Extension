@@ -30,7 +30,7 @@ class DimmerImage extends React.Component {
   handleOpen = () => {
     dataStore.seasons = [];
     const { show } = this.props;
-    plex.getSeasons(show.key);
+    plex.getSeasons(show.api_children);
 
     // threw some timeouts in to get around async issues but will use Promises later maybe
     setTimeout(() => {
@@ -144,7 +144,7 @@ class DimmerImage extends React.Component {
         dimmer={{ active, content }}
         onMouseEnter={this.handleShow}
         onMouseLeave={this.handleHide}
-        src={'https://10.20.0.10:32400' + show.thumb}
+        src={show.thumb}
       />
     );
   }
