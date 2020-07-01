@@ -1,6 +1,5 @@
 import dataStore from '../../popup/dataStore';
 import * as browser from 'webextension-polyfill';
-// import _ from 'lodash';
 const PlexAPI = require('plex-api');
 const parseString = require('xml2js').parseString;
 
@@ -45,9 +44,13 @@ function PlexClient() {
 const searchShows = inputText => {
   PlexClient().then(
     resolve => {
-      const storageItem = browser.storage.local.get('selected_lib_id');
+      const storageItem = browser.storage.local.get([
+        'selected_lib_id',
+        'token',
+        'selected_server_uri'
+      ]);
       storageItem.then(res => {
-        const { selected_lib_id } = res;
+        const { selected_lib_id, token, selected_server_uri } = res;
 
         resolve.query(`/library/sections/${selected_lib_id}/all`).then(
           result => {
@@ -55,13 +58,18 @@ const searchShows = inputText => {
             result.MediaContainer.Metadata.filter(({ title }) => {
               return title.toLowerCase().includes(inputText.toLowerCase());
             }).forEach(show => {
-              console.log(show);
               // stop the list from getting too big
               if (shows.length >= 30) return;
+
+              // builds a fancy URL that is an actually usable to view the image
+              const thumb_url = `${selected_server_uri}/photo/:/transcode?width=111&height=165&minSize=1&url=${selected_server_uri}${
+                show.thumb
+              }&X-Plex-Token=${token}`;
               shows.push({
                 id: show.ratingKey,
                 name: show.title,
-                thumb: show.thumb
+                thumb: thumb_url,
+                api_children: show.key
               });
             });
             dataStore.foundShows = shows;
@@ -73,13 +81,14 @@ const searchShows = inputText => {
       });
     },
     err => {
-      console.log(`[Posterizer-Error] ${err}`);
+      console.log(`[Posterizer] ${err}`);
     }
   );
 };
 
 // Pulls plex season info out of a URL and saves it to store
 const getSeasons = libURL => {
+  console.log(libURL);
   PlexClient().then(client => {
     client.query(libURL).then(
       result => {
