@@ -32,13 +32,18 @@ const postFinalURLs = matchups => {
       // 'http://10.20.0.10:32400/library/metadata/ID/posters?includeExternalMedia=1&url=ENCODEDURL&X-Plex-Token=TOKEN'
       const request_url = `${api_url}/library/metadata/${
         matchup[0]
-      }/posters?includeExternalMedia=1&url=${matchup[1]}&X-Plex-Token=${token}`;
+      }/posters?includeExternalMedia=1`;
 
       setTimeout(() => {
         console.log(`[POST] ${request_url}`);
 
+        var myHeaders = new Headers();
+        myHeaders.append('url', matchup[1]);
+        myHeaders.append('X-Plex-Token', token);
+
         fetch(request_url, {
           method: 'POST',
+          headers: myHeaders,
           redirect: 'follow'
         })
           .then(response => response.text())
@@ -159,5 +164,10 @@ const removeCachedToken = () => {
 };
 
 const removeCache = () => {
-  browser.storage.local.set({ selected_uri: null });
+  browser.storage.local.set({
+    selected_server_uri: null,
+    selected_server_name: null,
+    selected_lib_id: null,
+    selected_lib_name: null
+  });
 };
