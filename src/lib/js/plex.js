@@ -37,7 +37,7 @@ const searchShows = () => {
         result => {
           const shows = result.MediaContainer.Metadata;
           dataStore.foundShows = shows.filter(({ title }) =>
-            title.toLowerCase().includes(dataStore.inputText)
+            title.toLowerCase().includes(dataStore.inputText.toLowerCase())
           );
         },
         err => {
