@@ -16,34 +16,29 @@ browser.runtime.onMessage.addListener(message => {
 });
 
 const postFinalURLs = matchups => {
-  let api_url = null;
-  let token = null;
-  const storageItem = browser.storage.local.get(['token', 'selected_uri']);
+  const storageItem = browser.storage.local.get([
+    'token',
+    'selected_server_uri'
+  ]);
   storageItem.then(res => {
-    api_url = res.selected_uri;
-    token = res.token;
+    const { token, selected_server_uri } = res;
 
-    if (api_url && token) sendPOSTs();
+    if (token && selected_server_uri) sendPOSTs(token, selected_server_uri);
   });
 
-  const sendPOSTs = () => {
+  const sendPOSTs = (token, selected_server_uri) => {
     Object.keys(matchups).forEach(key => {
       const matchup = matchups[key];
-      // 'http://10.20.0.10:32400/library/metadata/ID/posters?includeExternalMedia=1&url=ENCODEDURL&X-Plex-Token=TOKEN'
-      const request_url = `${api_url}/library/metadata/${
+      const request_url = `${selected_server_uri}/library/metadata/${
         matchup[0]
-      }/posters?includeExternalMedia=1`;
+      }/posters?includeExternalMedia=1
+      &url=${matchup[1]}&X-Plex-Token=${token}`;
 
       setTimeout(() => {
         console.log(`[POST] ${request_url}`);
 
-        var myHeaders = new Headers();
-        myHeaders.append('url', matchup[1]);
-        myHeaders.append('X-Plex-Token', token);
-
         fetch(request_url, {
           method: 'POST',
-          headers: myHeaders,
           redirect: 'follow'
         })
           .then(response => response.text())
