@@ -1,10 +1,12 @@
 # Posterizer browser extension for PosterDB and Plex
 
+#### !! Using this extension in it's current state is against The PosterDB terms of service. A few lines of code "scrape" URLs out of the loaded page which is against the TOS. This extension mostly serves as a proof of concept for now until the PosterDB team releases an API that can be used. This extension wont be made available on the mozilla extension store until then.
+
 Posterizer is made to quickly POST image URLs to Plex Media Server directly from the web while browsing poster sets on [ThePosterDB.com](https://theposterdb.com/)
 
-When looking at a TV show poster set while logged into ThePosterDB, the extension can be used to search for a show in your Plex library. Once a show is selected, the extension parses the HTML to find download URLs of each season poster and matches it up to the corresponding season in Plex which results in a list of POST URLs that can be used to update plex images. This means you don't need to right click on each image's download button, copy the url, then walk through the Plex edit menus and paste the URL - saving a crazy amount of time when unifying TV show poster schemes.
+When looking at a TV show poster set while logged into ThePosterDB, the extension can be used to search for a show in your Plex library. Once a show is selected, the extension parses the HTML to find download URLs of each season poster and matches it up to the corresponding season in Plex which results in a list of POST URLs that can be used to update plex images. This means you don't need to right click on each image's download button, copy the url, then walk through the Plex edit menus and paste the URL - saving a crazy amount of time with no additional HTTP requests to Plex or the PosterDB!
 
-![Sample Video](/screenshots/recording.mp4)
+![Sample Video - looks a little different now](/screenshots/recording.mp4)
 
 ### ToDo before it would be ready for public use:
 As of now this project has hard coded internal IP addresses for API calls as it's for personal use. 
@@ -14,51 +16,13 @@ As of now this project has hard coded internal IP addresses for API calls as it'
   :white_check_mark: Ability to clear auth and cache <br/>
   :large_orange_diamond: Replace hard coded IP address calls to Plex API<br/>
   :large_orange_diamond: Detect API failure and respond appropriately <br/>
-  :x: Fix matching for 'Specials' posters <br/>
+  :large_orange_diamond: Fix matching for 'Specials' posters <br/>
   :x: Movie/Collection compatability? <br/>
+  :x: **PosterDB API instead of pulling from HTML** <br/>
 
 </em>
 
 *Built using [React Extension Boilerplate](https://github.com/kryptokinght/react-extension-boilerplate)*
-
-
-## Installation
-
-*Before you begin installing this project you need [**NodeJS**](https://nodejs.org/en/) and [**npm**](https://www.npmjs.com/get-npm) installed on your machine. Make sure to install the latest version of node.*
-
-```bash
-# clone the git repo
-$ git clone https://gitlab.com/cbackas/posterizer-extension.git
-
-# Install dependencies
-$ npm install
-```
-
-## Development
-
-* Run script
-```bash
-# build files to './dev' 
-# and launches the web ext in a new chrome instance, watches for changes and updates
-$ npm run start:chrome
-# launches in firefox
-$ npm run start:firefox
-# runs storybook
-$ npm run storybook
-```
-
-* If you want to load your unpacked extension by yourself, then run `npm run dev`. This will create the extension inside an **dev** folder in `development` mode and will watch the `src` folder for changes.   
-* [Load unpacked extensions](https://developer.chrome.com/extensions/getstarted#unpacked) with `./dev` folder. Though you have to reload the extension by yourself every time the `./dev` folder updates.
-  
-These assets are copied as it is to the build folder, just like the `/src/lib` folder.
-
-
-## Build
-
-```bash
-# build files to './extension'
-$ npm run build
-```
 
 ## License
 
