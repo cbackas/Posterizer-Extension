@@ -108,7 +108,7 @@ const fetchToken = callback => {
       `&context[device][platform]=${platform}` +
       `&context[device][device]=${encodeURI(device)}` +
       `&clientID=${clientId}` +
-      `&forwardUrl=${redirectUri}` +
+      // `&forwardUrl=${redirectUri}` +
       `&code=${code}`;
 
     browser.windows
