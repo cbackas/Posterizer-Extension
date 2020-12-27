@@ -1,7 +1,7 @@
 {
-  "name": "react-extension-boilerplate",
-  "version": "1.2.1",
-  "description": "Modern React boilerplate for Firefox and Chrome extensions",
+  "name": "posterizer",
+  "version": "1.3",
+  "description": "Posterdb to Plex image POSTing",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:chrome": "npm run chrome-launch",
@@ -30,12 +30,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kryptokinght/react-extension-boilerplate.git"
+    "url": "https://github.com/cbackas/Posterizer-Extension.git"
   },
-  "author": "Minanshu Singh <minanshu.1998@gmail.com>",
+  "author": "Zac Gibson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
+    "url": "https://github.com/cbackas/Posterizer-Extension/issues"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
