@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as browser from 'webextension-polyfill';
+import _ from 'lodash';
 import { view, store } from '@risingstack/react-easy-state';
 import { Button, Image, Modal, Icon, List } from 'semantic-ui-react';
 
@@ -11,13 +12,14 @@ const plex = require('../../lib/js/plex');
 const cheerio = require('cheerio');
 
 // this is all contained inside each plex show on the search list
-class DimmerImage extends React.Component {
+class SearchItem extends React.Component {
   constructor(props) {
     super(props);
 
     this.compStore = store({
       active: false,
-      readyToApply: false
+      readyToApply: false,
+      matchedSeasons: []
     });
 
     this.applyRef = React.createRef();
@@ -25,6 +27,8 @@ class DimmerImage extends React.Component {
 
   handleShow = () => (this.compStore.active = true);
   handleHide = () => (this.compStore.active = false);
+
+  visualMatchups = <h3>No Matchups</h3>;
 
   // When the modal opens, it starts gettin the the season and poster data and matching it
   handleModalOpen = () => {
@@ -66,20 +70,36 @@ class DimmerImage extends React.Component {
         dataStore.matchups = {};
         const { seasons, posterSeasons } = dataStore;
         seasons.forEach(({ title, key }) => {
+          // pull the key PLEX id out of the season
           const regex_db_id = /\/library\/metadata\/([0-9]+)\//;
           const db_id_match = key.match(regex_db_id);
           if (db_id_match) {
+            // if key found
             const db_id = db_id_match[1];
+            // get posterDBURL from posterSeasons[seasonTitle]
             const posterDBURL = encodeURIComponent(
               posterSeasons[title.toLowerCase()]
             );
+            // add that matchup to the datastore
             dataStore.matchups[title.toLowerCase()] = [db_id, posterDBURL];
           }
         });
 
         const { matchups } = dataStore;
+        console.log(matchups);
         let domNode = ReactDOM.findDOMNode(this.applyRef.current);
         if (domNode) {
+          // set the visual matchups that show on screen
+          const m = _.cloneDeep(matchups);
+          this.visualMatchups = Object.keys(m).map(season => {
+            const isMatchedUp = m[season][1] != 'undefined';
+            return (
+              <p key={season}>
+                {season} - {isMatchedUp ? 'matched' : 'unmatched'}
+              </p>
+            );
+          });
+
           this.compStore.readyToApply = true;
           domNode.addEventListener('click', () => this.handleApply(matchups));
         }
@@ -102,7 +122,6 @@ class DimmerImage extends React.Component {
 
   render() {
     const { readyToApply } = this.compStore;
-
     const { show } = this.props;
 
     return (
@@ -121,10 +140,7 @@ class DimmerImage extends React.Component {
             <Modal.Content>
               <Modal.Description>
                 {/* Gives a little message when matchups are ready */}
-                {/* TODO more info about matchups here?? */}
-                {readyToApply
-                  ? 'Ok lets give it a go'
-                  : 'nothing matched up yet'}
+                {readyToApply ? this.visualMatchups : 'Matching up seasons...'}
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
@@ -145,4 +161,4 @@ class DimmerImage extends React.Component {
   }
 }
 
-export default view(DimmerImage);
+export default view(SearchItem);
