@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as browser from 'webextension-polyfill';
 import { view, store } from '@risingstack/react-easy-state';
-import { Button, Dimmer, Header, Image, Modal, Icon } from 'semantic-ui-react';
+import { Button, Image, Modal, Icon, List } from 'semantic-ui-react';
 
 import dataStore from '../dataStore';
 const plex = require('../../lib/js/plex');
@@ -27,7 +27,7 @@ class DimmerImage extends React.Component {
   handleHide = () => (this.compStore.active = false);
 
   // When the modal opens, it starts gettin the the season and poster data and matching it
-  handleOpen = () => {
+  handleModalOpen = () => {
     dataStore.seasons = [];
     const { show } = this.props;
     plex.getSeasons(show.api_children);
@@ -101,51 +101,46 @@ class DimmerImage extends React.Component {
   };
 
   render() {
-    const { active, readyToApply } = this.compStore;
-    const content = (
-      <div>
-        <Header as="h2" inverted content="Posterize" />
-        <Modal
-          trigger={<Button primary onClick={this.handleOpen} content="Go" />}
-        >
-          <Modal.Header>PosterDB</Modal.Header>
-          <Modal.Content>
-            <Modal.Description>
-              {/* Gives a little message when matchups are ready */}
-              {/* TODO more info about matchups here?? */}
-              {readyToApply ? 'Ok lets give it a go' : 'nothing matched up yet'}
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            {/* Apply button in the modal - grey and disabled until data is ready */}
-            <Button
-              color={readyToApply ? 'green' : 'grey'}
-              disabled={readyToApply ? false : true}
-              ref={this.applyRef}
-            >
-              <Icon name="checkmark" />
-              Apply
-            </Button>
-          </Modal.Actions>
-        </Modal>
-      </div>
-    );
+    const { readyToApply } = this.compStore;
 
     const { show } = this.props;
 
     return (
-      <Dimmer.Dimmable
-        as={Image}
-        inline
-        fluid
-        centered
-        verticalAlign="middle"
-        dimmed={active}
-        dimmer={{ active, content }}
-        onMouseEnter={this.handleShow}
-        onMouseLeave={this.handleHide}
-        src={show.thumb}
-      />
+      <List.Item key={show.id}>
+        <Image width="78" height="110" src={show.thumb} />
+        <Image />
+        <List.Content>
+          <Modal
+            trigger={
+              <List.Header as="a" onClick={this.handleModalOpen}>
+                {show.name}
+              </List.Header>
+            }
+          >
+            <Modal.Header>PosterDB</Modal.Header>
+            <Modal.Content>
+              <Modal.Description>
+                {/* Gives a little message when matchups are ready */}
+                {/* TODO more info about matchups here?? */}
+                {readyToApply
+                  ? 'Ok lets give it a go'
+                  : 'nothing matched up yet'}
+              </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+              {/* Apply button in the modal - grey and disabled until data is ready */}
+              <Button
+                color={readyToApply ? 'green' : 'grey'}
+                disabled={readyToApply ? false : true}
+                ref={this.applyRef}
+              >
+                <Icon name="checkmark" />
+                Apply
+              </Button>
+            </Modal.Actions>
+          </Modal>
+        </List.Content>
+      </List.Item>
     );
   }
 }

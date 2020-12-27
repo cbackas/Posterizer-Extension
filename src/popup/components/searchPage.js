@@ -1,10 +1,10 @@
 import React from 'react';
 import { view, store } from '@risingstack/react-easy-state';
 import _ from 'lodash';
-import { Input, Button, Segment, Grid, Header } from 'semantic-ui-react';
+import { Input, Button, Header, List } from 'semantic-ui-react';
 
 import dataStore from '../dataStore';
-import DimmerImage from './dimmerImage';
+import SearchItem from './searchItem';
 
 const plex = require('../../lib/js/plex');
 
@@ -13,7 +13,8 @@ class SearchPage extends React.Component {
     super(props);
 
     this.compStore = store({
-      input_text: ''
+      input_text: '',
+      readyToApply: false
     });
   }
 
@@ -29,68 +30,55 @@ class SearchPage extends React.Component {
       this.handleSearch();
     }
   };
+
   render() {
     const { foundShows } = dataStore;
     const { input_text } = this.compStore;
 
     return (
       <React.Fragment>
-        <Segment
+        <div
           style={{
-            overflow: 'auto',
-            position: 'absolute',
-            top: '6.5em',
-            width: '90%'
+            width: '90%',
+            textAlign: 'center',
+            paddingTop: '1em'
           }}
-          raised
         >
-          <div>
-            <Input
-              placeholder="Search for a show..."
-              value={input_text}
-              onChange={this.handleInput}
-              onKeyPress={this.handleKeyPress}
-              style={{ width: '70%' }}
-            />
-            <Button
-              onClick={this.handleSearch}
-              content="Search"
-              style={{ width: '25%' }}
-            />
-          </div>
-        </Segment>
-        <Grid
-          centered
-          relaxed
-          columns={3}
+          <Input
+            placeholder="Search for a show..."
+            value={input_text}
+            onChange={this.handleInput}
+            onKeyPress={this.handleKeyPress}
+            style={{ width: '70%' }}
+          />
+          <Button
+            onClick={this.handleSearch}
+            content="Search"
+            style={{
+              width: '25%',
+              marginLeft: '1em'
+            }}
+          />
+        </div>
+        <List
+          size="huge"
           style={{
-            margin: '6em 1.5em 4em 1.5em',
+            marginTop: '1em',
+            marginBottom: '1em',
             minHeight: '350px',
-            height: '100%'
+            height: '100%',
+            width: '90%'
           }}
         >
           {foundShows.map(show => (
-            <Grid.Column key={show.id} style={{ height: 300, width: 200 }}>
-              <Segment raised style={{ height: '100%', width: '100%' }}>
-                <DimmerImage show={_.cloneDeep(show)} />
-                <div
-                  style={{
-                    paddingTop: '10px',
-                    paddingBottom: '10px',
-                    textAlign: 'center'
-                  }}
-                >
-                  <Header as="h4">{show.name}</Header>
-                </div>
-              </Segment>
-            </Grid.Column>
+            <SearchItem key={show.id} show={_.cloneDeep(show)} />
           ))}
-          {foundShows.length >= 30 ? (
-            <Header size="small" style={{ color: 'white' }}>
-              30 items shown. To see more, use a better query.
-            </Header>
-          ) : null}
-        </Grid>
+        </List>
+        {foundShows.length >= 30 ? (
+          <Header size="small" style={{ color: 'white' }}>
+            Max of 30 items shown. Try a better query.
+          </Header>
+        ) : null}
       </React.Fragment>
     );
   }
