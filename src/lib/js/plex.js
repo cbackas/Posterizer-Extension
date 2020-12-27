@@ -27,7 +27,7 @@ function PlexClient() {
         new PlexAPI({
           hostname: url.hostname,
           port: url.port,
-          https: url.protocol === 'http:',
+          https: url.protocol === 'https:',
           token: token
         })
       );
