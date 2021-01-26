@@ -86,7 +86,7 @@ const searchShows = inputText => {
   );
 };
 
-// Pulls plex season info out of a URL and saves it to store
+// pulls plex season info out of a URL and saves it to store
 const getSeasons = libURL => {
   console.log(libURL);
   PlexClient().then(client => {

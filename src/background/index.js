@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
+// listen for calls to perform various actions that need to execute even if the popup closes
 browser.runtime.onMessage.addListener(message => {
   if (message.request === 'post_matchups') {
     postFinalURLs(message.matchups);
@@ -15,7 +16,9 @@ browser.runtime.onMessage.addListener(message => {
   }
 });
 
+// given a formatted matchups object, POSTS all the urls to the Plex API endpoint configured in settings
 const postFinalURLs = matchups => {
+  // make sure we have plex authentication and an API server to call then perform the POSTs
   const storageItem = browser.storage.local.get([
     'token',
     'selected_server_uri'
@@ -26,6 +29,7 @@ const postFinalURLs = matchups => {
     if (token && selected_server_uri) sendPOSTs(token, selected_server_uri);
   });
 
+  // go through matchups and POST them to plex server API
   const sendPOSTs = (token, selected_server_uri) => {
     Object.keys(matchups).forEach(key => {
       const matchup = matchups[key];
@@ -51,6 +55,7 @@ const postFinalURLs = matchups => {
   };
 };
 
+// plex oAuth flow
 const fetchToken = callback => {
   const product = 'Posterizer';
   const platform = 'Web';
@@ -76,6 +81,7 @@ const fetchToken = callback => {
   var id = null;
   var code = null;
 
+  // start oAuth flow by requesting a pin from the plex oAuth endpoint and then redirecting to a login page
   initFlow = () => {
     var myHeaders = new Headers();
     myHeaders.append('X-Plex-Product', product);
@@ -99,6 +105,7 @@ const fetchToken = callback => {
       .catch(error => callback(error, null));
   };
 
+  // opens new browser popup to allow user to log into plex
   redirectToLogin = () => {
     var login_url =
       'https://app.plex.tv/auth#' +
@@ -129,6 +136,7 @@ const fetchToken = callback => {
       });
   };
 
+  // runs a GET request to turn the clientID and code given by plex login page into a token
   codeToToken = () => {
     var myHeaders = new Headers();
     myHeaders.append('X-Plex-Client-Identifier', clientId);
@@ -145,6 +153,7 @@ const fetchToken = callback => {
       .catch(error => callback(error, null));
   };
 
+  // save plex authentication token to storage so we can use it whenever we need it
   saveAccessToken = token => {
     access_token = token;
     console.log('Setting access_token: ', access_token);
@@ -153,11 +162,13 @@ const fetchToken = callback => {
   };
 };
 
+// clear token from browser storage
 const removeCachedToken = () => {
   access_token = null;
   browser.storage.local.set({ token: null });
 };
 
+// clear settings for plex from browser storage
 const removeCache = () => {
   browser.storage.local.set({
     selected_server_uri: null,
