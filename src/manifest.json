@@ -15,7 +15,7 @@
   "page_action": {
     "browser_style": true,
     "default_title": "Posterizer",
-    "default_icon": "img/orange.png",
+    "default_icon": "img/posterizer-icon.png",
     "default_popup": "popup.html",
     "show_matches": ["*://*.theposterdb.com/*"]
   },
@@ -28,6 +28,6 @@
     "unlimitedStorage"
   ],
   "icons": {
-    "128": "img/orange.png"
+    "128": "img/posterizer-icon.png"
   }
 }
