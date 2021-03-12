@@ -92,7 +92,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-app-polyfill": "^0.2.2",
-    "react-dev-utils": "^7.0.5",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.14.0",
     "react-input-mask": "^2.0.4",
     "resolve": "1.8.1",
